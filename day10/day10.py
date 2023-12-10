@@ -1,4 +1,5 @@
 from shapely.geometry import Polygon,Point
+from shapely.prepared import prep
 
 def find_s(input_array):
     for row_id,row in enumerate(input_array):
@@ -50,8 +51,20 @@ with open ('day10_input.txt','r') as input:
     width = len(input_array[0])
     height = len(input_array)
     in_polygon = 0
+    # for i in range(height):
+    #     for j in range(width):
+    #         if polygon.contains(Point(j,i)):   #time for some brute force, loop through all points to see if it's in the polygon hehe
+    #             in_polygon += 1
+    # print(in_polygon)
+
+    #Q2 optimized
+    points = []
     for i in range(height):
         for j in range(width):
-            if polygon.contains(Point(j,i)):   #time for some brute force, loop through all points to see if it's in the polygon hehe
-                in_polygon += 1
+            points.append(Point(j,i))
+    prepared_polygon = prep(polygon)
+    for i in points:
+        if prepared_polygon.contains(i):
+            in_polygon += 1
     print(in_polygon)
+
